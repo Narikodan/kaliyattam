@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>മുച്ചിലോട്ട് ഭഗ�വതി കളിയാട്ടം കലണ്ടർ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4361ee;
+            --primary-light: #4895ef;
+            --secondary: #3f37c9;
+            --accent: #f72585;
+            --light: rgba(248, 249, 250, 0.85);
+            --dark: #212529;
+            --gray: #6c757d;
+            --gray-light: #e9ecef;
+            --success: #4cc9f0;
+            --border-radius: 12px;
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            /* Background image without overlay */
+            background: url('images/muchilottamma.jpeg') center/cover no-repeat fixed;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 20px;
+            
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+           
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 8px;
+            
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--gray);
+            margin-bottom: 15px;
+        }
+
+        .today-date {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--gray);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .today-date i {
+            color: var(--primary);
+        }
+
+        .card {
+            
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 25px;
+            margin-bottom: 30px;
+            transition: var(--transition);
+            backdrop-filter: blur(5px);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title i {
+            color: var(--primary);
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            border-radius: 50px;
+           
+            font-weight: 600;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: var(--gray-light);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: var(--border-radius);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+       
+
+        th {
+            padding: 16px 20px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        th:first-child {
+            border-top-left-radius: var(--border-radius);
+        }
+
+        th:last-child {
+            border-top-right-radius: var(--border-radius);
+        }
+
+        tbody tr {
+            transition: var(--transition);
+            border-bottom: 1px solid var(--gray-light);
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background-color: rgba(46, 76, 211, 0.534);
+        }
+
+        td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .temple-name {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .festival-date {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        .today-table tbody tr {
+            background-color: rgba(76, 201, 240, 0.3);
+            border-left: 4px solid var(--success);
+        }
+
+        .today-table tbody tr:hover {
+            background-color: rgba(76, 201, 240, 0.4);
+        }
+
+        .festival-indicator {
+            display: inline-flex;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--success);
+            margin-right: 8px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: var(--gray);
+            font-size: 0.9rem;
+            background: var(--light);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(5px);
+        }
+
+        @media (max-width: 768px) {
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            th, td {
+                padding: 12px 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            body {
+                padding: 10px;
+            }
+            
+            .card {
+                padding: 20px 15px;
+            }
+            
+            th, td {
+                padding: 10px 12px;
+                font-size: 0.85rem;
+            }
+            
+            .card-title {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-torii-gate"></i> മുച്ചിലോട്ട് ഭഗവതി കളിയാട്ടം കലണ്ടർ</h1>
+            
+            <div class="today-date">
+                <i class="far fa-calendar-alt"></i>
+                <span id="todayText"></span>
+            </div>
+        </header>
+
+        <section class="card" id="today-section">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <i class="fas fa-star"></i> ഇന്നത്തെ തിരുമുടി 
+                </h2>
+                <div id="todayTag" class="tag" style="display:none;">
+                    <i class="fas fa-bell"></i> Today
+                </div>
+            </div>
+            <div id="today-table-wrapper">
+                <div id="no-today" class="empty-state">
+                    <i class="far fa-calendar-times"></i>
+                    <h3>ഇന്ന് എവിടെയും തിരുമുടി ഇല്ല</h3>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="card-header">
+                <h2 class="card-title">
+                    <i class="fas fa-list"></i> മുച്ചിലോട്ട് ഭഗവതി കളിയാട്ടം 
+                </h2>
+                <div class="festival-count">
+                    <span id="festivalCount">56</span> Festivals
+                </div>
+            </div>
+            <div class="table-container">
+                <table id="all-table">
+                    <thead>
+                        <tr>
+                            <th>Temple Name</th>
+                            <th>Festival Date Range</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-start="2025-11-11" data-end="2025-11-14">
+                            <td class="temple-name">നമ്പ്രം</td>
+                            <td class="festival-date">Nov 11–14, 2025</td>
+                        </tr>
+                        <tr data-start="2025-11-28" data-end="2025-12-01">
+                            <td class="temple-name">കോടാപറമ്പ്</td>
+                            <td class="festival-date">Nov 28 – Dec 1, 2025</td>
+                        </tr>
+                        <tr data-start="2025-12-01" data-end="2025-12-03">
+                            <td class="temple-name">കുന്നിരിക്ക</td>
+                            <td class="festival-date">Dec 1–3, 2025</td>
+                        </tr>
+                        <tr data-start="2025-12-02" data-end="2025-12-05">
+                            <td class="temple-name">കീഴാറ്റൂർ</td>
+                            <td class="festival-date">Dec 2–5, 2025</td>
+                        </tr>
+                        <tr data-start="2025-12-03" data-end="2025-12-05">
+                            <td class="temple-name">നെല്യാട് വട്ടോളി</td>
+                            <td class="festival-date">Dec 3–5, 2025</td>
+                        </tr>
+                        <tr data-start="2025-12-07" data-end="2025-12-10">
+                            <td class="temple-name">കവിണിശ്ശേരി</td>
+                            <td class="festival-date">Dec 7–10, 2025</td>
+                        </tr>
+                        <tr data-start="2025-12-11" data-end="2025-12-14">
+                            <td class="temple-name">എളയാവൂർ</td>
+                            <td class="festival-date">Dec 11–14, 2025</td>
+                        </tr>
+                        <tr data-start="2025-12-12" data-end="2025-12-14">
+                            <td class="temple-name">മതിലുവളപ്പ് ഉളിയിൽ</td>
+                            <td class="festival-date">Dec 12–14, 2025</td>
+                        </tr>
+                        <tr data-start="2025-12-16" data-end="2025-12-18">
+                            <td class="temple-name">നെല്ലൂന്നി മട്ടന്നൂർ</td>
+                            <td class="festival-date">Dec 16–18, 2025</td>
+                        </tr>
+                        <tr data-start="2025-12-20" data-end="2025-12-22">
+                            <td class="temple-name">പാതിരിയാട്</td>
+                            <td class="festival-date">Dec 20–22, 2025</td>
+                        </tr>
+                        <tr data-start="2025-12-20" data-end="2025-12-23">
+                            <td class="temple-name">കുളങ്ങര പുതിയകാവ് കുറ്റിയാട്ടൂർ</td>
+                            <td class="festival-date">Dec 20–23, 2025</td>
+                        </tr>
+                        <tr data-start="2025-12-23" data-end="2025-12-25">
+                            <td class="temple-name">ആറ്റിന്കര പുതിയകാവ് ഏളക്കുഴി</td>
+                            <td class="festival-date">Dec 23–25, 2025</td>
+                        </tr>
+                        <tr data-start="2025-12-28" data-end="2025-12-30">
+                            <td class="temple-name">കുമ്മാനം പുതിയപറമ്പത്ത് എളമ്പാറ</td>
+                            <td class="festival-date">Dec 28–30, 2025</td>
+                        </tr>
+                        <tr data-start="2025-12-28" data-end="2025-12-31">
+                            <td class="temple-name">മഠത്തുംപടി ഇടക്കേപ്പുറം</td>
+                            <td class="festival-date">Dec 28–31, 2025</td>
+                        </tr>
+                        <tr data-start="2026-12-31" data-end="2026-01-02">
+                            <td class="temple-name">മേറ്റടി</td>
+                            <td class="festival-date">Dec 31 – Jan 2, 2026</td>
+                        </tr>
+                        <tr data-start="2026-01-01" data-end="2026-01-04">
+                            <td class="temple-name">കടന്നപ്പള്ളി</td>
+                            <td class="festival-date">Jan 1–4, 2026</td>
+                        </tr>
+                        <tr data-start="2026-01-02" data-end="2026-01-04">
+                            <td class="temple-name">കൈതേരി കൂത്തുപറമ്പ</td>
+                            <td class="festival-date">Jan 2–4, 2026</td>
+                        </tr>
+                        <tr data-start="2026-01-03" data-end="2026-01-06">
+                            <td class="temple-name">അരീക്കുളങ്ങര ചെറുകുന്ന് കണ്ണപുരം</td>
+                            <td class="festival-date">Jan 3–6, 2026</td>
+                        </tr>
+                        <tr data-start="2026-01-05" data-end="2026-01-08">
+                            <td class="temple-name">ചുഴലി വളക്കൈ</td>
+                            <td class="festival-date">Jan 5–8, 2026</td>
+                        </tr>
+                        <tr data-start="2026-01-06" data-end="2026-01-08">
+                            <td class="temple-name">മേലൂർ കണ്ടനാൽ പുതിയകാവ്</td>
+                            <td class="festival-date">Jan 6–8, 2026</td>
+                        </tr>
+                        <tr data-start="2026-01-07" data-end="2026-01-10">
+                            <td class="temple-name">കുന്നാവ്</td>
+                            <td class="festival-date">Jan 7–10, 2026</td>
+                        </tr>
+                        <tr data-start="2026-01-08" data-end="2026-01-10">
+                            <td class="temple-name">പടിയൂർ</td>
+                            <td class="festival-date">Jan 8–10, 2026</td>
+                        </tr>
+                        <tr data-start="2026-01-09" data-end="2026-01-12">
+                            <td class="temple-name">നാറാത്ത്</td>
+                            <td class="festival-date">Jan 9–12, 2026</td>
+                        </tr>
+                        <tr data-start="2026-01-09" data-end="2026-01-12">
+                            <td class="temple-name">മുയിപ്ര</td>
+                            <td class="festival-date">Jan 9–12, 2026</td>
+                        </tr>
+                        <tr data-start="2026-01-15" data-end="2026-01-17">
+                            <td class="temple-name">മുളയിങ്കൽ മട്ടന്നൂർ</td>
+                            <td class="festival-date">Jan 15–17, 2026</td>
+                        </tr>
+                        <tr data-start="2026-01-15" data-end="2026-01-17">
+                            <td class="temple-name">കൊല്ലമ്പറ്റ</td>
+                            <td class="festival-date">Jan 15–17, 2026</td>
+                        </tr>
+                        <tr data-start="2026-01-17" data-end="2026-01-19">
+                            <td class="temple-name">തെരൂർ</td>
+                            <td class="festival-date">Jan 17–19, 2026</td>
+                        </tr>
+                        <tr data-start="2026-01-20" data-end="2026-01-22">
+                            <td class="temple-name">കാഞ്ഞിരാട്ട് കൈതേരിപ്പൊയിൽ</td>
+                            <td class="festival-date">Jan 20–22, 2026</td>
+                        </tr>
+                        <tr data-start="2026-01-21" data-end="2026-01-23">
+                            <td class="temple-name">എളമ്പാറ</td>
+                            <td class="festival-date">Jan 21–23, 2026</td>
+                        </tr>
+                        <tr data-start="2026-01-22" data-end="2026-01-24">
+                            <td class="temple-name">നിടുമ്ബ്രം ചൊക്ലി</td>
+                            <td class="festival-date">Jan 22–24, 2026</td>
+                        </tr>
+                        <tr data-start="2026-01-23" data-end="2026-01-26">
+                            <td class="temple-name">കണ്ടനാർപൊയിൽ മയ്യിൽ</td>
+                            <td class="festival-date">Jan 23–26, 2026</td>
+                        </tr>
+                        <tr data-start="2026-01-23" data-end="2026-01-27">
+                            <td class="temple-name">കോലാവ്</td>
+                            <td class="festival-date">Jan 23–27, 2026</td>
+                        </tr>
+                        <tr data-start="2026-01-25" data-end="2026-01-29">
+                            <td class="temple-name">വളപട്ടണം</td>
+                            <td class="festival-date">Jan 25–29, 2026</td>
+                        </tr>
+                        <tr data-start="2026-01-29" data-end="2026-01-31">
+                            <td class="temple-name">കീഴുന്ന തോട്ടട</td>
+                            <td class="festival-date">Jan 29–31, 2026</td>
+                        </tr>
+                        <tr data-start="2026-01-31" data-end="2026-02-03">
+                            <td class="temple-name">കല്യാട്</td>
+                            <td class="festival-date">Jan 31 – Feb 3, 2026</td>
+                        </tr>
+                        <tr data-start="2026-02-01" data-end="2026-02-03">
+                            <td class="temple-name">അണിയേരി പാനൂർ</td>
+                            <td class="festival-date">Feb 1–3, 2026</td>
+                        </tr>
+                        <tr data-start="2026-02-01" data-end="2026-02-03">
+                            <td class="temple-name">പാണ്ട്യഞ്ചേരി പിണറായി</td>
+                            <td class="festival-date">Feb 1–3, 2026</td>
+                        </tr>
+                        <tr data-start="2026-02-03" data-end="2026-02-05">
+                            <td class="temple-name">കടമ്പൂർ എടക്കാട്</td>
+                            <td class="festival-date">Feb 3–5, 2026</td>
+                        </tr>
+                        <tr data-start="2026-02-05" data-end="2026-02-07">
+                            <td class="temple-name">ആറ്റടപ്പ</td>
+                            <td class="festival-date">Feb 5–7, 2026</td>
+                        </tr>
+                        <tr data-start="2026-02-06" data-end="2026-02-09">
+                            <td class="temple-name">മാടായി</td>
+                            <td class="festival-date">Feb 6–9, 2026</td>
+                        </tr>
+                        <tr data-start="2026-02-07" data-end="2026-02-10">
+                            <td class="temple-name">വട്ടാക്കീൽ കല്യാശേരി</td>
+                            <td class="festival-date">Feb 7–10, 2026</td>
+                        </tr>
+                        <tr data-start="2026-02-08" data-end="2026-02-10">
+                            <td class="temple-name">തീർത്ഥങ്കര ചെറുവാഞ്ചേരി</td>
+                            <td class="festival-date">Feb 8–10, 2026</td>
+                        </tr>
+                        <tr data-start="2026-02-08" data-end="2026-02-11">
+                            <td class="temple-name">ഉദയമംഗലം തലക്കോട്</td>
+                            <td class="festival-date">Feb 8–11, 2026</td>
+                        </tr>
+                        <tr data-start="2026-02-13" data-end="2026-02-15">
+                            <td class="temple-name">കൂടാളി</td>
+                            <td class="festival-date">Feb 13–15, 2026</td>
+                        </tr>
+                        <tr data-start="2026-02-13" data-end="2026-02-15">
+                            <td class="temple-name">ഇല്ലംഭാഗം മട്ടന്നൂർ</td>
+                            <td class="festival-date">Feb 13–15, 2026</td>
+                        </tr>
+                        <tr data-start="2026-02-13" data-end="2026-02-15">
+                            <td class="temple-name">ചാവശ്ശേരി പാലോറ</td>
+                            <td class="festival-date">Feb 13–15, 2026</td>
+                        </tr>
+                        <tr data-start="2026-02-13" data-end="2026-02-16">
+                            <td class="temple-name">കൂറ്റേരി പാനൂർ</td>
+                            <td class="festival-date">Feb 13–16, 2026</td>
+                        </tr>
+                        <tr data-start="2026-02-16" data-end="2026-02-18">
+                            <td class="temple-name">പൊന്ന്യം പുല്യോടി</td>
+                            <td class="festival-date">Feb 16–18, 2026</td>
+                        </tr>
+                        <tr data-start="2026-02-19" data-end="2026-02-21">
+                            <td class="temple-name">മാലൂർ വേങ്ങക്കണ്ടി</td>
+                            <td class="festival-date">Feb 19–21, 2026</td>
+                        </tr>
+                        <tr data-start="2026-02-19" data-end="2026-02-21">
+                            <td class="temple-name">മീത്തലെ പുന്നാട്</td>
+                            <td class="festival-date">Feb 19–21, 2026</td>
+                        </tr>
+                        <tr data-start="2026-02-21" data-end="2026-02-23">
+                            <td class="temple-name">കല്ലൂർ മട്ടന്നൂർ</td>
+                            <td class="festival-date">Feb 21–23, 2026</td>
+                        </tr>
+                        <tr data-start="2026-02-24" data-end="2026-02-26">
+                            <td class="temple-name">വെളുത്തകുന്നത് ബാവോട്</td>
+                            <td class="festival-date">Feb 24–26, 2026</td>
+                        </tr>
+                        <tr data-start="2026-02-24" data-end="2026-02-27">
+                            <td class="temple-name">കുറുമാത്തൂർ</td>
+                            <td class="festival-date">Feb 24–27, 2026</td>
+                        </tr>
+                        <tr data-start="2026-02-25" data-end="2026-02-28">
+                            <td class="temple-name">ചൂളിയാട്</td>
+                            <td class="festival-date">Feb 25–28, 2026</td>
+                        </tr>
+                        <tr data-start="2026-02-27" data-end="2026-03-01">
+                            <td class="temple-name">നമ്പള്ളി കൊളശ്ശേരി</td>
+                            <td class="festival-date">Feb 27 – Mar 1, 2026</td>
+                        </tr>
+                        <tr data-start="2026-02-27" data-end="2026-03-01">
+                            <td class="temple-name">പന്തിലാം പിലാക്കൂൽ മാലൂർ</td>
+                            <td class="festival-date">Feb 27 – Mar 1, 2026</td>
+                        </tr>
+                        <tr data-start="2026-02-28" data-end="2026-03-02">
+                            <td class="temple-name">കൂവേരി</td>
+                            <td class="festival-date">Feb 28 – Mar 2, 2026</td>
+                        </tr>
+                        <tr data-start="2026-03-01" data-end="2026-03-03">
+                            <td class="temple-name">കൊടോളിപ്പ്രം</td>
+                            <td class="festival-date">Mar 1–3, 2026</td>
+                        </tr>
+                        <tr data-start="2026-03-02" data-end="2026-03-04">
+                            <td class="temple-name">പെരളശ്ശേരി പുതിയകാവ്</td>
+                            <td class="festival-date">Mar 2–4, 2026</td>
+                        </tr>
+                        <tr data-start="2026-03-03" data-end="2026-03-06">
+                            <td class="temple-name">പരിപ്പായി ശ്രീകണ്ഠാപുരം</td>
+                            <td class="festival-date">Mar 3–6, 2026</td>
+                        </tr>
+                        <tr data-start="2026-03-04" data-end="2026-03-07">
+                            <td class="temple-name">ചോറോട് രാമത്ത് പുതിയകാവ്</td>
+                            <td class="festival-date">Mar 4–7, 2026</td>
+                        </tr>
+                        <tr data-start="2026-03-06" data-end="2026-03-08">
+                            <td class="temple-name">കാക്കടവത്ത് ഉളിയിൽപാലം</td>
+                            <td class="festival-date">Mar 6–8, 2026</td>
+                        </tr>
+                        <tr data-start="2026-03-09" data-end="2026-03-11">
+                            <td class="temple-name">കോയിലോട് പഴയിടം ശങ്കരനെല്ലൂര്</td>
+                            <td class="festival-date">Mar 9–11, 2026</td>
+                        </tr>
+                        <tr data-start="2026-03-11" data-end="2026-03-13">
+                            <td class="temple-name">മാവിലാച്ചാൽ ഏച്ചൂർ</td>
+                            <td class="festival-date">Mar 11–13, 2026</td>
+                        </tr>
+                        <tr data-start="2026-03-15" data-end="2026-03-17">
+                            <td class="temple-name">ആറ്റുംകര ആറളം</td>
+                            <td class="festival-date">Mar 15–17, 2026</td>
+                        </tr>
+                        <tr data-start="2026-03-17" data-end="2026-03-19">
+                            <td class="temple-name">പൊതിയാൽകണ്ടി കാഞ്ഞിലേരി</td>
+                            <td class="festival-date">Mar 17–19, 2026</td>
+                        </tr>
+                        <tr data-start="2026-03-20" data-end="2026-03-22">
+                            <td class="temple-name">തുണ്ടിയിൽ പേരാവൂർ</td>
+                            <td class="festival-date">Mar 20–22, 2026</td>
+                        </tr>
+                        <tr data-start="2026-04-02" data-end="2026-04-04">
+                            <td class="temple-name">മഹാദളം ചാവശ്ശേരി</td>
+                            <td class="festival-date">Apr 2–4, 2026</td>
+                        </tr>
+                        <tr data-start="2026-04-15" data-end="2026-04-17">
+                            <td class="temple-name">കുയിലൂർ</td>
+                            <td class="festival-date">Apr 15–17, 2026</td>
+                        </tr>
+                        <tr data-start="2026-04-19" data-end="2026-04-21">
+                            <td class="temple-name">മുടപ്പത്തൂർ</td>
+                            <td class="festival-date">Apr 19–21, 2026</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <div class="footer">
+            <p>മുച്ചിലോട്ട് ഭഗവതി കളിയാട്ടം കലണ്ടർ &copy; 2025-26 | Vishnu Narikodan</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, "0");
+            const dd = String(today.getDate()).padStart(2, "0");
+            const todayStr = `${yyyy}-${mm}-${dd}`;
+
+            // Show readable today date
+            document.getElementById("todayText").textContent = today.toDateString();
+
+            const allTable = document.getElementById("all-table");
+            const rows = allTable.querySelectorAll("tbody tr");
+            const todayWrapper = document.getElementById("today-table-wrapper");
+            const noToday = document.getElementById("no-today");
+            const todayTag = document.getElementById("todayTag");
+
+            let matches = [];
+
+            rows.forEach(row => {
+                const start = row.dataset.start;
+                const end = row.dataset.end;
+                if (start && end && start <= todayStr && todayStr <= end) {
+                    matches.push(row.cloneNode(true));
+                }
+            });
+
+            if (matches.length > 0) {
+                todayTag.style.display = "inline-flex";
+                noToday.remove();
+
+                const table = document.createElement("table");
+                table.className = "today-table";
+                table.innerHTML = `
+                    <thead>
+                        <tr>
+                            <th>Temple Name</th>
+                            <th>Festival Date Range</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                `;
+
+                const tbody = table.querySelector("tbody");
+                matches.forEach(m => {
+                    // Add festival indicator to today's festivals
+                    const templeNameCell = m.querySelector('.temple-name');
+                    templeNameCell.innerHTML = `<span class="festival-indicator"></span>${templeNameCell.innerHTML}`;
+                    tbody.appendChild(m);
+                });
+                todayWrapper.appendChild(table);
+            } else {
+                noToday.innerHTML = `
+                    <i class="far fa-calendar-times"></i>
+                    <h3>ഇന്ന് എവിടെയും തിരുമുടി ഇല്ല</h3>
+                `;
+            }
+
+            // Update festival count
+            document.getElementById('festivalCount').textContent = rows.length;
+        });
+    </script>
+</body>
+</html>
